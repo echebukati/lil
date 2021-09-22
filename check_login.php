@@ -1,5 +1,5 @@
 <?php
-$conn = new mysqli("localhost", "fintech", "wC!viIkBek@6", "fintechdb");
+$conn = new mysqli("fintechclouddb.cnydfygbrhuz.us-east-1.rds.amazonaws.com", "fintech", "wC!viIkBek@6", "fintechdb");
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
