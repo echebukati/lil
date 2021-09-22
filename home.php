@@ -13,8 +13,9 @@ $username = ($_SESSION['username']);
 <body>
 <h2>$100 Instant Loans</h2>
 <h3>Enter Period Between 1 and 12 Months</h3>
-<form method="post" action="insert.php">
+<form method="post" action="insert.php" enctype="multipart/form-data">
     <input name="months" type="text" placeholder="Payback Period (Months)" />
+    <input type="file" name="image" />
     <input type="submit" value="Apply"/>
 </form>
 </body>
