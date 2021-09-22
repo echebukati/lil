@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
-  header ("Location: index.php");
+	header ("Location: index.php");
 }
 $username = ($_SESSION['username']);
 ?>
@@ -13,9 +13,9 @@ $username = ($_SESSION['username']);
 <body>
 <h2>$100 Instant Loans</h2>
 <h3>Enter Period Between 1 and 12 Months</h3>
-<form method="post" action="backend/insert.php" enctype="multipart/form-data">
-    <input name="months" type="text" placeholder="Payback Period (Months)" />
-    <input type="file" name="image" />
+<form method="post" action="insert.php" enctype="multipart/form-data">
+    <input name="months" type="text" placeholder="Payback Period (Months)" /><br>
+    <input type="file" name="image" /><br>
     <input type="submit" value="Apply"/>
 </form>
 </body>
