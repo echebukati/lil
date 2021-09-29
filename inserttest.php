@@ -2,10 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
-require 'vendor/autoload.php';
-
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+require 'vendor/autoload.php';
 
 //require __DIR__ . '/vendor/autoload.php';
 
