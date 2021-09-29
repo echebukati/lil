@@ -1,11 +1,13 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
-
+date_default_timezone_set('US/Eastern');
 require 'vendor/autoload.php';
 
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
+use Aws\FraudDetector\FraudDetectorClient;
+use Aws\FraudDetector\Exception;
 
 //require __DIR__ . '/vendor/autoload.php';
 
@@ -40,8 +42,6 @@ $sql = "INSERT INTO transactions (user_id, amount, period, installments) VALUES 
 if(mysqli_query($link, $sql)) {
 	$insertid = mysqli_insert_id($link);
 	echo "Records added successfully.<br>";
-	echo "You have received your <b>$100</b> loan!<br>";
-	echo "You will pay back <b>$". $installments . "</b> for <b>".$period."</b> months.";
 	
 	//STARTFILEUPLOAD
 	if(isset($_FILES['image'])){
@@ -60,7 +60,51 @@ if(mysqli_query($link, $sql)) {
 		'SourceFile' => $temp_file_location			
 		]);
 		
-		var_dump($result);
+		//var_dump($result);
+
+
+		//CHECK FOR FRAUD
+		$client = new Aws\FraudDetector\FraudDetectorClient([
+			'region'  => 'us-east-1',
+			'version' => '2019-11-15'
+		]);
+
+		$entityid = strval(rand(1,10000));
+
+		$result = $client->getEventPrediction([
+			'detectorId' => 'lender_fraud_detector', // REQUIRED
+			'detectorVersionId' => '1',
+			'entities' => [ // REQUIRED
+				[
+					'entityId' => $entityid, // REQUIRED
+					'entityType' => 'lender', // REQUIRED
+				],
+			],
+			'eventId' => $entityid, // REQUIRED
+			'eventTimestamp' => date('Y-m-d\TH:i:00\Z', time()), // REQUIRED
+			'eventTypeName' => 'offerloan', // REQUIRED
+			'eventVariables' => [ // REQUIRED
+				'ip_address' => '27.220.141.61',
+				'email_address' => $username
+			]
+		]);
+
+		//echo $result;
+		echo "<br>";
+		echo "Fraud Score: ". $result["modelScores"][0]["scores"]["fraudulent_lender_detection_model_insightscore"];
+		echo "<br>";
+		$outcome = $result["ruleResults"][0]["outcomes"][0];
+		echo "Outcome: ". $outcome;
+		echo "<br>";
+		if ($outcome == "reject") {
+			echo "Failed. Your account is banned due to fraud. Contact support.";
+		} else {
+			echo "You have received your <b>$100</b> loan!<br>";
+			echo "You will pay back <b>$". $installments . "</b> for <b>".$period."</b> months.";
+			echo "Success. Proceeding to payment...";
+		}
+		
+		//END CHECK FOR FRAUD
 	}
 	//ENDFILEUPLOAD
 }
