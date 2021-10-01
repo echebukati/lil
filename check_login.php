@@ -1,8 +1,12 @@
 <?php
-$conn = new mysqli("fintechclouddb.cnydfygbrhuz.us-east-1.rds.amazonaws.com", "fintech", "wC!viIkBek@6", "fintechdb");
+//include 'getsecret.php';
+//$conn = new mysqli($secrets['host'], $secrets['username'], $secrets['password']);
+$conn = new mysqli("fintechclouddb.cnydfygbrhuz.us-east-1.rds.amazonaws.com", "fintech", "wC!viIkBek@6");
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
+
+$conn->select_db("fintechdb");
 
 $username = ($_POST['username']);
 $password = ($_POST['password']);
