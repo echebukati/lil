@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+  - name: Update and upgrade Ubuntu packages
+    become: true
+    apt:
+      upgrade: yes
+      update_cache: yes
