@@ -22,6 +22,7 @@ $username = ($_SESSION['username']);
 <style>table, th, td {border: 1px solid black;border-collapse: collapse;}</style>
 </head>
 <body>
+<p style="text-align:right">Welcome, <b><?php echo $username;?></b></p>
 <center>
 <h2>Sample P2P Lending App</h2>
 <br>
