@@ -2,14 +2,13 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 date_default_timezone_set('US/Eastern');
+/*
 require 'vendor/autoload.php';
-
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 use Aws\FraudDetector\FraudDetectorClient;
 use Aws\FraudDetector\Exception;
-
-//require __DIR__ . '/vendor/autoload.php';
+*/
 
 session_start();
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
@@ -42,24 +41,24 @@ $sql = "INSERT INTO transactions (user_id, amount, period, installments) VALUES 
 if(mysqli_query($link, $sql)) {
 	$insertid = mysqli_insert_id($link);
 	echo "Records added successfully.<br>";
-	
+
 	//STARTFILEUPLOAD
 	if(isset($_FILES['image'])){
-		
+
 		$file_name = $_FILES['image']['name'];
 		$temp_file_location = $_FILES['image']['tmp_name'];
-		
+
 		$s3 = new Aws\S3\S3Client([
 		'region'  => 'us-east-1',
 		'version' => 'latest'
 		]);
-		
+
 		$result = $s3->putObject([
 		'Bucket' => 'testfintechbucket',
 		'Key'    => $insertid.".pdf",
-		'SourceFile' => $temp_file_location			
+		'SourceFile' => $temp_file_location
 		]);
-		
+
 		//var_dump($result);
 
 
@@ -103,7 +102,7 @@ if(mysqli_query($link, $sql)) {
 			echo "You will pay back <b>$". $installments . "</b> for <b>".$period."</b> months.";
 			echo "Success. Proceeding to payment...";
 		}
-		
+
 		//END CHECK FOR FRAUD
 	}
 	//ENDFILEUPLOAD

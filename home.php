@@ -1,7 +1,7 @@
 <?php
-require 'vendor/autoload.php';
-use Aws\S3\S3Client;
-use Aws\S3\Exception\S3Exception;
+//require 'vendor/autoload.php';
+//use Aws\S3\S3Client;
+//use Aws\S3\Exception\S3Exception;
 
 session_start();
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
