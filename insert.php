@@ -1,14 +1,15 @@
+<center>
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
+
 date_default_timezone_set('US/Eastern');
-/*
+
 require 'vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 use Aws\FraudDetector\FraudDetectorClient;
 use Aws\FraudDetector\Exception;
-*/
 
 session_start();
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
@@ -25,25 +26,28 @@ if ($link === false) {
 	die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
+$amount = $_POST['amount'];
 $period = $_POST['months'];
+
 // Escape user inputs for security
 //$period = mysqli_real_escape_string($link, $period);
 
 
 if (isset($period)) {
-	$installments = 100 / (int)$period;
+	$divamount = ($amount*0.1) + $amount;
+	$installments = $divamount / (int)$period;
 	$installments = (int)$installments;
 }
 
 // attempt insert query execution
-$sql = "INSERT INTO transactions (user_id, amount, period, installments) VALUES ('$username', '100', '$period', '$installments')";
+$sql = "INSERT INTO transactions (user_id, amount, period, installments) VALUES ('$username', '$amount', '$period', '$installments')";
 
 if(mysqli_query($link, $sql)) {
 	$insertid = mysqli_insert_id($link);
 	echo "Records added successfully.<br>";
 
 	//STARTFILEUPLOAD
-	if(isset($_FILES['image'])){
+	if(isset($_FILES['image'])) {
 
 		$file_name = $_FILES['image']['name'];
 		$temp_file_location = $_FILES['image']['tmp_name'];
@@ -61,7 +65,9 @@ if(mysqli_query($link, $sql)) {
 
 		//var_dump($result);
 
+		echo "Successful upload.<br>";
 
+		/*
 		//CHECK FOR FRAUD
 		$client = new Aws\FraudDetector\FraudDetectorClient([
 			'region'  => 'us-east-1',
@@ -97,15 +103,17 @@ if(mysqli_query($link, $sql)) {
 		echo "<br>";
 		if ($outcome == "reject") {
 			echo "Failed. Your account is banned due to fraud. Contact support.";
-		} else {
-			echo "You have received your <b>$100</b> loan!<br>";
-			echo "You will pay back <b>$". $installments . "</b> for <b>".$period."</b> months.";
-			echo "Success. Proceeding to payment...";
+			return;
 		}
 
 		//END CHECK FOR FRAUD
+		*/
 	}
 	//ENDFILEUPLOAD
+
+	echo "You have offered a <b>$".$amount."</b> loan.<br>";
+	echo "Recipient will pay you back <b>$". $installments . "</b> every month for <b>".$period."</b> months.<br><br>";
+	echo "Proceeding to payment...";
 }
 else {
 	echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
@@ -115,3 +123,4 @@ else {
 mysqli_close($link);
 
 ?>
+</center?

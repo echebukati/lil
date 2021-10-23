@@ -22,7 +22,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `username`, `password`) VALUES
 (1, 'emmanuel', 'emmanuelpassword'),
 (2, 'james', 'jamespassword'),
-(3, 'stacy', 'stacypassword');
+(3, 'stacy', 'stacypassword'),
+(4, 'fake_agomez@example.com', 'password');
 
 
 CREATE TABLE `transactions` (
