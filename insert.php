@@ -1,22 +1,21 @@
 <center>
 <?php
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
-
-date_default_timezone_set('US/Eastern');
 
 require 'vendor/autoload.php';
+
+
 use Aws\S3\S3Client;
 use Aws\S3\Exception\S3Exception;
 use Aws\FraudDetector\FraudDetectorClient;
 use Aws\FraudDetector\Exception;
+
+date_default_timezone_set('US/Eastern');
 
 session_start();
 if (!(isset($_SESSION['username']) && $_SESSION['username'] != '')) {
 	header ("Location: index.php");
 }
 $username = ($_SESSION['username']);
-
 
 /* Attempt MySQL server connection. Assuming you are running MySQL
 server with default setting (user 'root' with no password) */
