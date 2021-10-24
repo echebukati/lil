@@ -18,6 +18,7 @@ if ($conn->connect_error) {
 $downloadid = $_GET['id'];
 
 $query = $conn->query("SELECT * FROM `transactions` WHERE user_id = '$username' AND id = '$downloadid'");
+
 if (mysqli_num_rows($query)) {
     $bucket = 'testfintechbucket';
     $keyname = $downloadid.".pdf";

@@ -34,7 +34,7 @@ $username = ($_SESSION['username']);
     <input name="months" type="text" placeholder="Payback Period (Months)" required/><br>
     <label><b>File Attachment</b></label>
     <input type="file" name="image" required/><br><br>
-    <input type="submit" value="Apply"/>
+    <input type="submit" value="Submit"/>
 </form>
 <br><br>
 <h3>Previous Loan Offers</h3>
@@ -59,6 +59,8 @@ if (mysqli_num_rows($query)) {
             echo '</tr>';
         }
     echo '</table>';
+} else {
+    echo "No records.";
 }
 ?>
 </center>
